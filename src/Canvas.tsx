@@ -5,7 +5,10 @@ import {
     applyEdgeChanges,
     applyNodeChanges,
     Background,
-    Controls, MiniMap,
+    Controls,
+    Edge, Node,
+    ReactFlowJsonObject,
+    MiniMap,
     Panel,
     ReactFlow,
     useReactFlow
@@ -18,17 +21,20 @@ import {Button} from "@mui/material";
 import ModalComponent from "./components/ModelComponent.tsx";
 import Sidebar from "./components/Sidebar.tsx";
 
-const initialNodes = [];
+const initialNodes: Node[] = [];
 
-const initialEdges = [];
+const initialEdges: Edge[] = [];
 let id = 0;
 const getId = () => `dndnode_${id++}`;
+const flowKey = "sample-flow";
 
 const Canvas = () => {
     const [nodes, setNodes] = useState(initialNodes);
     const [edges, setEdges] = useState(initialEdges);
     const [workflow, setWorkflow] = useState<Workflow>(null);
     const [modelOpen, setModalOpen] = useState(false);
+    const [rfInstance, setRfInstance] = useState<Flow>(null);
+    const { setViewport } = useReactFlow();
 
     const onNodesChange = useCallback(
         (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
@@ -100,6 +106,28 @@ const Canvas = () => {
         [screenToFlowPosition, type, content],
     );
 
+    const onSave = useCallback(() => {
+        if (rfInstance) {
+            const flow: ReactFlowJsonObject = rfInstance.toObject();
+            localStorage.setItem(flowKey, JSON.stringify(flow));
+        }
+    }, [rfInstance]);
+
+    const onRestore = useCallback(() => {
+        const restoreFlow = async () => {
+            const flow: ReactFlowJsonObject = JSON.parse(localStorage.getItem(flowKey));
+
+            if (flow) {
+                const { x = 0, y = 0, zoom = 1 } = flow.viewport;
+                setNodes(flow.nodes || []);
+                setEdges(flow.edges || []);
+                setViewport({ x, y, zoom });
+            }
+        };
+
+        restoreFlow();
+    }, [setNodes, setViewport]);
+
     const showAlert = () => {
         const workflow: Workflow = {
             name: "WorkflowName",
@@ -143,6 +171,7 @@ const Canvas = () => {
                         onConnect={onConnect}
                         onDrop={onDrop}
                         onDragOver={onDragOver}
+                        onInit={setRfInstance}
                         nodeTypes={nodeTypes}
                         fitView
                     >
@@ -151,6 +180,11 @@ const Canvas = () => {
                                 Console Workflow
                             </Button>
                             <ModalComponent open={modelOpen} handleClose={closeModal}  jsonContent={workflow}/>
+                            <Button type={"button"} variant="contained" className={"m-4 p-4"}> Import </Button>
+                        </Panel>
+                        <Panel position={"top-right"}>
+                            <Button type={"button"} variant="contained" className={"m-4 p-4"} onClick={onSave}> Save </Button>
+                            <Button type={"button"} variant="contained" className={"m-4 p-4"} onClick={onRestore}> Restore </Button>
                         </Panel>
                         <Background />
                         <Controls />
