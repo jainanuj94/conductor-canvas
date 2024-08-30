@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from "react";
+import {Task} from "../types/Workflow.ts";
 
 export interface DndContextType {
   type: string;
@@ -10,7 +11,7 @@ export const DnDContext = createContext<DndContextType>({} as DndContextType);
 
 export const DnDProvider = ({ children }) => {
   const [type, setType] = useState("");
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState<Task>(null);
 
   return (
     <DnDContext.Provider

@@ -90,10 +90,7 @@ const Canvas = () => {
                 id: getId(type),
                 type: type,
                 position,
-                data: {
-                    label: content.label,
-                    value: content,
-                },
+                data: content,
             };
 
             setNodes((nds) => nds.concat(newNode));

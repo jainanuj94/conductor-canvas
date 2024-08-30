@@ -11,7 +11,7 @@ type Props = {
 export const SidebarItem = (props: Props) => {
     const {setType, setContent} = useDnD();
 
-    const onDragStart = (event, nodeType, values) => {
+    const onDragStart = (event, nodeType: string, values: Task) => {
         if (setType) {
             setType(nodeType);
         }
