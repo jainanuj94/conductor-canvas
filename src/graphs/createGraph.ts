@@ -1,4 +1,4 @@
-import {Workflow} from "../types/Workflow.ts";
+import {Task, Workflow} from "../types/Workflow.ts";
 import {Edge, Node} from "@xyflow/react";
 import {Graph} from "../types/Graph.ts";
 
@@ -17,39 +17,59 @@ const preprocessTasks = (workflow: Workflow) : Workflow => {
 }
 
 export const createGraph = (workflow: Workflow) : Graph => {
+
     const nodes: Node[] = [];
     const edges: Edge[] = [];
 
     const fetchId = (type: string, index: number) => `${type}-${index}`;
 
     const processedWorkflow = preprocessTasks(workflow);
-    processedWorkflow.tasks.forEach((task, index) => {
-        // Create a node
+    const processTask = (task: Task, index: number, parentId?: string) => {
         const nodeId = fetchId(task.type, index);
-        const position = { x: 250, y: index * 100 }; // Adjust x and y positions as needed
+        const position = { x: 250, y: nodes.length * 100 };
 
         const node: Node = {
             id: nodeId,
             type: task.type,
             position,
-            data: {
-                label: task.name,
-                value: task,
-            },
+            data: task
         };
 
         nodes.push(node);
 
-        // Create an edge from the previous node to the current node, if applicable
-        if (index > 0) {
-            const previousNodeId = fetchId(workflow.tasks[index - 1].type, index - 1);
+        if (parentId) {
             const edge: Edge = {
-                id: `edge-${previousNodeId}-${nodeId}`,
-                source: previousNodeId,
-                target: nodeId,
+                id: `edge-${parentId}-${nodeId}`,
+                source: parentId,
+                target: nodeId
             };
             edges.push(edge);
         }
+
+        if (task.type === "SWITCH" && task.decisionCases) {
+            Object.entries(task.decisionCases).forEach(([condition, tasks], i) => {
+                if (tasks.length > 0) {
+                    processTask(tasks[0], nodes.length, nodeId);
+                    for (let j = 1; j < tasks.length; j++) {
+                        processTask(tasks[j], nodes.length);
+                    }
+                }
+            });
+
+            if (task.defaultCase && task.defaultCase.length > 0) {
+                processTask(task.defaultCase[0], nodes.length, nodeId);
+                for (let j = 1; j < task.defaultCase.length; j++) {
+                    processTask(task.defaultCase[j], nodes.length);
+                }
+            }
+        }
+
+        return nodeId;
+    };
+
+    processedWorkflow.tasks.forEach((task: Task, index: number) => {
+        const parentId = index > 0 ? nodes[nodes.length - 1].id : undefined;
+        processTask(task, nodes.length, parentId);
     });
 
     return { nodes, edges };

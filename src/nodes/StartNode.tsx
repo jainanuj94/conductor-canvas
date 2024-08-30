@@ -5,7 +5,7 @@ const StartNode = memo(({data}) => {
     const connections = useHandleConnections({type: "source", id: "source_0"});
     return (
         <>
-            {(data.label && <div>{data.label}</div>) || <div>Start</div>}
+            {(data.name && <div>{data.name}</div>) || <div>Start</div>}
             <Handle
                 type="source"
                 position={Position.Bottom}

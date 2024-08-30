@@ -21,7 +21,7 @@ import {nodeTypes} from "./nodes/registry.ts";
 import {Button} from "@mui/material";
 import ModalComponent from "./components/ModelComponent.tsx";
 import Sidebar from "./components/Sidebar.tsx";
-import {sampleWorkflow} from "./constants/sampleWorkflow.ts";
+import {sampleWorkflow, workflow_with_switch} from "./constants/sampleWorkflow.ts";
 import {createGraph} from "./graphs/createGraph.ts";
 
 const initialNodes: Node[] = [];
@@ -156,7 +156,8 @@ const Canvas = () => {
     const closeModal = () => setModalOpen(false);
 
     const generateGraph = () => {
-        const { nodes, edges } = createGraph(sampleWorkflow);
+        // const { nodes, edges } = createGraph(sampleWorkflow);
+        const { nodes, edges } = createGraph(workflow_with_switch);
         setNodes(nodes);
         setEdges(edges);
     }

@@ -34,7 +34,7 @@ export const processGraph = (graph: Graph, startNodeId: string): any[] => {
         const node = nodeMap.get(currentNodeId);
         if (node) {
             if (node.type !== "startNode" && node.type !== "terminateNode")
-                values.push(node.data.value);
+                values.push(node.data);
             const neighbors = adjacencyList.get(currentNodeId) || [];
             for (const neighbor of neighbors) {
                 if (!visited.has(neighbor)) {

@@ -1,14 +1,12 @@
 // @flow
 import * as React from 'react';
 import {useDnD} from "../context/DnDContext.tsx";
+import {Task} from "../types/Workflow.ts";
 
 type Props = {
     className: string | null,
     type: string,
-    data: {
-        label: string,
-        value?: never
-    }
+    data: Task
 };
 export const SidebarItem = (props: Props) => {
     const {setType, setContent} = useDnD();
@@ -29,7 +27,7 @@ export const SidebarItem = (props: Props) => {
             }
             draggable
         >
-            {props.data.label}
+            {props.data.name}
         </div>
     );
 };

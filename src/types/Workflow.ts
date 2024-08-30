@@ -26,4 +26,8 @@ export type Task = {
     startDelay?: number;
     optional?: boolean;
     asyncComplete?: boolean;
+    decisionCases?: Record<string, Task[]>;
+    defaultCase?: Task[];
+    evaluatorType?: string;
+    expression?: string;
 }

@@ -11,7 +11,7 @@ const SwitchNode = memo(({ data, isConnectable }) => {
         style={{ top: 0, background: "#555" }}
         isConnectable={isConnectable}
       />
-      {(data.label && <div>{data.label}</div>) || <div>Human</div>}
+      {(data.name && <div>{data.name}</div>) || <div>Switch</div>}
       <Handle
         type="source"
         position={Position.Right}
