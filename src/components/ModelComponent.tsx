@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Modal, Button, Box, Typography } from '@mui/material';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
+import {useState} from 'react';
+import {Modal, Button, Box, Typography} from '@mui/material';
+import {CopyToClipboard} from 'react-copy-to-clipboard';
 import {Workflow} from "../types/Workflow.ts";
 
 type Props = {
@@ -42,7 +42,18 @@ const ModalComponent = (props: Props) => {
                 <Typography id="modal-title" variant="h6" component="h2">
                     JSON Content
                 </Typography>
-                <pre id="modal-description" className="mt-4 p-4 bg-gray-100 rounded">{JSON.stringify(props.jsonContent, null, 2)}</pre>
+                <pre
+                    id="modal-description"
+                    className="mt-4 p-4 bg-gray-100 rounded"
+                    style={{
+                        maxHeight: '300px', // You can adjust the max height as needed
+                        overflowY: 'auto',
+                        whiteSpace: 'pre-wrap', // To wrap long lines
+                        wordBreak: 'break-word', // To prevent overflow
+                    }}
+                >
+                {JSON.stringify(props.jsonContent, null, 2)}
+                </pre>
                 <CopyToClipboard text={JSON.stringify(props.jsonContent, null, 2)} onCopy={handleCopy}>
                     <Button
                         variant="contained"

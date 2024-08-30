@@ -1,5 +1,6 @@
 import {tasks} from "../tasks/tasks.ts";
 import {SidebarItem} from "./SidebarItem.tsx";
+import {Task} from "../types/Workflow.ts";
 
 const Sidebar = () => {
 
@@ -13,7 +14,7 @@ const Sidebar = () => {
                 type: "startNode",
                 name: "Start"
             }}/>
-            {tasks.map((task: never) => {
+            {tasks.map((task: Task) => {
                 return (
                     <SidebarItem
                         key={task.name}
