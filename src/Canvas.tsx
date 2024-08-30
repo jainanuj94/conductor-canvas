@@ -6,11 +6,12 @@ import {
     applyNodeChanges,
     Background,
     Controls,
-    Edge, Node,
-    ReactFlowJsonObject,
+    Edge,
     MiniMap,
+    Node,
     Panel,
     ReactFlow,
+    ReactFlowJsonObject,
     useReactFlow
 } from "@xyflow/react";
 import {useDnD} from "./context/DnDContext.tsx";
@@ -20,12 +21,14 @@ import {nodeTypes} from "./nodes/registry.ts";
 import {Button} from "@mui/material";
 import ModalComponent from "./components/ModelComponent.tsx";
 import Sidebar from "./components/Sidebar.tsx";
+import {sampleWorkflow} from "./constants/sampleWorkflow.ts";
+import {createGraph} from "./graphs/createGraph.ts";
 
 const initialNodes: Node[] = [];
 
 const initialEdges: Edge[] = [];
 let id = 0;
-const getId = () => `dndnode_${id++}`;
+const getId = (type: string) => `${type}_${id++}`;
 const flowKey = "sample-flow";
 
 const Canvas = () => {
@@ -33,7 +36,7 @@ const Canvas = () => {
     const [edges, setEdges] = useState(initialEdges);
     const [workflow, setWorkflow] = useState<Workflow>(null);
     const [modelOpen, setModalOpen] = useState(false);
-    const [rfInstance, setRfInstance] = useState<Flow>(null);
+    const [rfInstance, setRfInstance] = useState<ReactFlowJsonObject>(null);
     const { setViewport } = useReactFlow();
 
     const onNodesChange = useCallback(
@@ -59,14 +62,6 @@ const Canvas = () => {
         event.dataTransfer.dropEffect = "move";
     }, []);
 
-    function fetchId(type: string) {
-        return type === "startNode"
-            ? "0"
-            : type === "terminateNode"
-                ? "1000"
-                : getId();
-    }
-
     const onDrop = useCallback(
         (event) => {
             event.preventDefault();
@@ -78,7 +73,7 @@ const Canvas = () => {
 
             if (
                 type === "startNode" &&
-                nodes.filter((n) => n.type === "startNode").length > 0
+                nodes.filter((n) => n.type.startsWith("startNode")).length > 0
             ) {
                 console.warn("Only one start node is expected");
                 return;
@@ -92,7 +87,7 @@ const Canvas = () => {
             });
 
             const newNode = {
-                id: fetchId(type),
+                id: getId(type),
                 type: type,
                 position,
                 data: {
@@ -152,12 +147,19 @@ const Canvas = () => {
         };
 
         const graph: Graph = { nodes, edges };
-        workflow.tasks = processGraph(graph, "0");
+        workflow.tasks = processGraph(graph,
+            nodes.find((n) => n.type.startsWith("startNode")).id);
         setWorkflow(workflow);
         setModalOpen(true);
     };
 
     const closeModal = () => setModalOpen(false);
+
+    const generateGraph = () => {
+        const { nodes, edges } = createGraph(sampleWorkflow);
+        setNodes(nodes);
+        setEdges(edges);
+    }
 
     return (
         <main style={{ height: "100%" }}>
@@ -180,7 +182,7 @@ const Canvas = () => {
                                 Console Workflow
                             </Button>
                             <ModalComponent open={modelOpen} handleClose={closeModal}  jsonContent={workflow}/>
-                            <Button type={"button"} variant="contained" className={"m-4 p-4"}> Import </Button>
+                            <Button type={"button"} variant="contained" className={"m-4 p-4"} onClick={generateGraph}> Import </Button>
                         </Panel>
                         <Panel position={"top-right"}>
                             <Button type={"button"} variant="contained" className={"m-4 p-4"} onClick={onSave}> Save </Button>

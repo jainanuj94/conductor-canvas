@@ -17,3 +17,13 @@ export type Workflow = {
     outputParameters: object;
     tasks: object[];
 }
+
+export type Task = {
+    name: string;
+    taskReferenceName: string;
+    inputParameters?: Record<string, any>;
+    type: string;
+    startDelay?: number;
+    optional?: boolean;
+    asyncComplete?: boolean;
+}

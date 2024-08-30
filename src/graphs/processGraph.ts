@@ -1,4 +1,5 @@
 import {Node} from "@xyflow/react";
+import {Graph} from "../types/Graph.ts";
 
 export const processGraph = (graph: Graph, startNodeId: string): any[] => {
     const { nodes, edges } = graph;
