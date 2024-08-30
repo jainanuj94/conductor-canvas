@@ -7,7 +7,7 @@ const TerminateNode = memo(({ data, isConnectable }) => {
       <Handle
         type="target"
         position={Position.Top}
-        id="a"
+        id="target_0"
         style={{ top: 0, background: "#555" }}
         isConnectable={isConnectable}
       />

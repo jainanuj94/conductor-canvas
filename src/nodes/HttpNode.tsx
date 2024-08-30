@@ -1,13 +1,15 @@
 import { memo } from "react";
-import { Handle, Position } from "@xyflow/react";
+import {Handle, Position, useHandleConnections} from "@xyflow/react";
 
 const HttpNode = memo(({ data, isConnectable }) => {
+    const connections = useHandleConnections({type: "source", id:"source_0"});
+
     return (
         <>
             <Handle
                 type="target"
                 position={Position.Top}
-                id="a"
+                id="target_0"
                 style={{ top: 0, background: "#555" }}
                 isConnectable={isConnectable}
             />
@@ -15,9 +17,10 @@ const HttpNode = memo(({ data, isConnectable }) => {
             <Handle
                 type="source"
                 position={Position.Bottom}
-                id="a"
+                id="source_0"
                 style={{ top: 15, background: "#555" }}
-                isConnectable={isConnectable}
+                isConnectable={connections.length < 1}
+
             />
         </>
     );

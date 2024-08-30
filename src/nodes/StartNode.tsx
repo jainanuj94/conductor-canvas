@@ -1,18 +1,19 @@
-import { memo } from "react";
-import { Handle, Position } from "@xyflow/react";
+import {memo} from "react";
+import {Handle, Position, useHandleConnections} from "@xyflow/react";
 
-const StartNode = memo(({ data, isConnectable }) => {
-  return (
-    <>
-      {(data.label && <div>{data.label}</div>) || <div>Start</div>}
-      <Handle
-        type="source"
-        position={Position.Bottom}
-        id="a"
-        style={{ top: 15, background: "#555" }}
-        isConnectable={isConnectable}
-      />
-    </>
-  );
+const StartNode = memo(({data}) => {
+    const connections = useHandleConnections({type: "source", id: "source_0"});
+    return (
+        <>
+            {(data.label && <div>{data.label}</div>) || <div>Start</div>}
+            <Handle
+                type="source"
+                position={Position.Bottom}
+                id="source_0"
+                style={{top: 15, background: "#555"}}
+                isConnectable={connections.length < 1}
+            />
+        </>
+    );
 });
 export default StartNode;
