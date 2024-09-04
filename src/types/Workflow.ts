@@ -27,6 +27,7 @@ export type Task = {
     optional?: boolean;
     asyncComplete?: boolean;
     decisionCases?: Record<string, Task[]>;
+    loopOver: Task[];
     defaultCase?: Task[];
     evaluatorType?: string;
     expression?: string;

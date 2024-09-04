@@ -12,21 +12,21 @@ const SwitchNode = memo(({data, isConnectable}) => {
                 isConnectable={isConnectable}
             />
             {(data.name && <div>{data.name}</div>) || <div>Switch</div>}
-            {Object.entries(data.decisionCases).map((condition ) => {
-                    return (
-                        <Handle
-                            key={condition[0]}
-                            type="source"
-                            position={Position.Right}
-                            id={condition[0]}
-                            style={{top: 15, background: "#555"}}
-                            isConnectable={isConnectable}
-                        />
-                    )
-            })}
+            {/*{Object.entries(data.decisionCases).map((condition ) => {*/}
+            {/*        return (*/}
+            {/*            <Handle*/}
+            {/*                key={condition[0]}*/}
+            {/*                type="source"*/}
+            {/*                position={Position.Right}*/}
+            {/*                id={condition[0]}*/}
+            {/*                style={{top: 15, background: "#555"}}*/}
+            {/*                isConnectable={isConnectable}*/}
+            {/*            />*/}
+            {/*        )*/}
+            {/*})}*/}
             <Handle
                 type="source"
-                position={Position.Left}
+                position={Position.Bottom}
                 id="default"
                 style={{top: 15, background: "#555"}}
                 isConnectable={isConnectable}

@@ -21,8 +21,9 @@ import {nodeTypes} from "./nodes/registry.ts";
 import {Button} from "@mui/material";
 import ModalComponent from "./components/ModelComponent.tsx";
 import Sidebar from "./components/Sidebar.tsx";
-import {sampleWorkflow, workflow_with_switch} from "./constants/sampleWorkflow.ts";
-import {createGraph} from "./graphs/createGraph.ts";
+import {getReactFlowElementsFromGraph} from "./graphs/createGraph.ts";
+import WorkflowDAG from "./graphs/WorkflowDAG";
+import {workflow_with_fork} from "./constants/actualWorkflow";
 
 const initialNodes: Node[] = [];
 
@@ -154,9 +155,18 @@ const Canvas = () => {
 
     const generateGraph = () => {
         // const { nodes, edges } = createGraph(sampleWorkflow);
-        const { nodes, edges } = createGraph(workflow_with_switch);
-        setNodes(nodes);
-        setEdges(edges);
+        // const { nodes, edges } = createGraph(workflow_with_switch);
+        // setNodes(nodes);
+        // setEdges(edges);
+
+        const workflowDef = workflow_with_fork
+        const workflowDAG = new WorkflowDAG(workflowDef);
+        workflowDAG.defToGraph(workflowDef);
+        const graph = workflowDAG.fetchGraph();
+        console.log(graph)
+        const {nodes, edges} = getReactFlowElementsFromGraph(graph);
+        setNodes(nodes)
+        setEdges(edges)
     }
 
     return (

@@ -1,3 +1,6 @@
+#
+src/constants/actualWorkflow.ts
+
 # Logs
 logs
 *.log

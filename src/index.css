@@ -92,7 +92,9 @@ body,
 
 .react-flow__node-HUMAN,
 .react-flow__node-SIMPLE,
-.react-flow__node-HTTP {
+.react-flow__node-HTTP,
+.react-flow__node-JOIN,
+.react-flow__node-FORK_JOIN {
     height: 20px;
     padding: 4px;
     border: 1px solid #1a192b;
