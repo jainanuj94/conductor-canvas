@@ -96,7 +96,7 @@ const Canvas = () => {
 
             setNodes((nds) => nds.concat(newNode));
         },
-        [screenToFlowPosition, type, content],
+        [screenToFlowPosition, type, content, nodes],
     );
 
     const onSave = useCallback(() => {

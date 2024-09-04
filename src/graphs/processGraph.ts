@@ -1,7 +1,8 @@
 import {Node} from "@xyflow/react";
 import {Graph} from "../types/Graph.ts";
+import { Task } from "../types/Workflow.ts";
 
-export const processGraph = (graph: Graph, startNodeId: string): any[] => {
+export const processGraph = (graph: Graph, startNodeId: string): Task[] => {
     const { nodes, edges } = graph;
     const nodeMap = new Map<string, Node>();
     const adjacencyList: Map<string, string[]> = new Map();
@@ -22,7 +23,7 @@ export const processGraph = (graph: Graph, startNodeId: string): any[] => {
     // Initialize BFS
     const queue: string[] = [startNodeId];
     const visited: Set<string> = new Set();
-    const values: any[] = [];
+    const values: Task[] = [];
 
     while (queue.length > 0) {
         const currentNodeId = queue.shift()!;

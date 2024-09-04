@@ -47,7 +47,6 @@ export const getReactFlowElementsFromGraph = (graph: dagre.graphlib.Graph<NodeDa
 
     // Convert graphlib.Graph edges to React Flow edges
     graph.edges().forEach((edgeObj) => {
-        const edge = graph.edge(edgeObj);
         edges.push({
             id: `e-${edgeObj.v}-${edgeObj.w}`,
             source: edgeObj.v,
@@ -92,7 +91,7 @@ export const createGraph = (workflow: Workflow): Graph => {
         }
 
         if (task.type === "SWITCH" && task.decisionCases) {
-            Object.entries(task.decisionCases).forEach(([condition, tasks], i) => {
+            Object.entries(task.decisionCases).forEach(([condition, tasks]) => {
                 if (tasks.length > 0) {
                     processTask(tasks[0], nodes.length, nodeId, condition, condition);
                     for (let j = 1; j < tasks.length; j++) {

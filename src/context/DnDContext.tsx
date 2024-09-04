@@ -3,7 +3,7 @@ import {Task} from "../types/Workflow.ts";
 
 export interface DndContextType {
   type: string;
-  content: {} | null;
+  content: object | null;
   setType;
   setContent;
 }

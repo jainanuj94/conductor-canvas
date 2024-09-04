@@ -21,7 +21,7 @@ export type Workflow = {
 export type Task = {
     name: string;
     taskReferenceName: string;
-    inputParameters?: Record<string, any>;
+    inputParameters?: Record<string, unknown>;
     type: string;
     startDelay?: number;
     optional?: boolean;

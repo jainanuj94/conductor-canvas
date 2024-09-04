@@ -160,7 +160,7 @@ export default class WorkflowDAG {
                 }
                 retval.push(
                     ..._.flatten(
-                        Object.entries(task.decisionCases).map(([caseValue, tasks]) => {
+                        Object.entries(task.decisionCases).map(([, tasks]) => {
                             return tasks;
                         })
                     )
@@ -224,7 +224,7 @@ export default class WorkflowDAG {
             lastLoopTask?.type === "DECISION"
         ) {
             Object.entries(lastLoopTask.decisionCases).forEach(
-                ([caseValue, tasks]) => {
+                ([, tasks]) => {
                     const lastTaskInCase = _.last(tasks);
                     this.addVertex(endDoWhileTask, [lastTaskInCase]);
                 }
